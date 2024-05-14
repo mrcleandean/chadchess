@@ -22,7 +22,7 @@ const Timer = ({ active }: { active: boolean }) => {
         }, 500);
         return () => {
             clearInterval(intervalId);
-            flagged.current = flagged.current - 
+            // flagged.current = flagged.current - 
         }
     }, [active]);
     return (
