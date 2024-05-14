@@ -1,0 +1,10 @@
+{
+    "watch": [
+        "./src/"
+    ],
+    "ext": "ts",
+    "ignore": [
+        "server/src/**/*.spec.ts"
+    ],
+    "exec": "ts-node-dev --respawn --transpile-only ./src/server.ts"
+}
