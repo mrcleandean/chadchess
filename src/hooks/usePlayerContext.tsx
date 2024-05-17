@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, createContext, useContext } from "react";
-import { ClientUser } from "../server/src/lobby";
+import { type Dispatch, type SetStateAction, createContext, useContext } from "react";
+import type { ClientUser } from "../server/src/lobby";
 
 
 

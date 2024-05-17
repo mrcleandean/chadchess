@@ -3,7 +3,7 @@ import { gigachad } from "../assets";
 import { PlayerContext } from "../hooks/usePlayerContext";
 import { socket } from "../socket";
 import RouterProvider from "./Router";
-import { ClientUser } from "../server/src/lobby";
+import type { ClientUser } from "../server/src/lobby";
 
 const Providers = () => {
     const [connected, setConnected] = useState(socket.connected);

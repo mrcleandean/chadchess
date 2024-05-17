@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
-import { OutcomeType } from "./Online";
+import type { OutcomeType } from "./Online";
 
 function formatTime(ms: number) {
     let seconds = Math.floor(ms / 1000); // Convert milliseconds to seconds

@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion"
 import { AiOutlineArrowRight, AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { chest, gigachad, liam, mega, rambo, squidward, stewie, tate } from "../assets";
-import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useEffect, useState } from "react";
+import { type ChangeEvent, type Dispatch, type KeyboardEvent, type SetStateAction, useEffect, useState } from "react";
 import { usePlayerContext } from "../hooks/usePlayerContext";
 import { BsFillChatDotsFill } from 'react-icons/bs'
 import { socket } from "../socket";

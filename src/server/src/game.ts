@@ -1,4 +1,4 @@
-import { Chess, Move, Square } from "chess.js";
+import { Chess, Move } from "chess.js";
 
 export type User = {
     id: string;

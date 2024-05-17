@@ -1,13 +1,12 @@
 import { Chessboard } from "react-chessboard"
 import { BsFillChatDotsFill, BsFlagFill } from 'react-icons/bs'
-import { FaHandshake } from 'react-icons/fa'
-import { Square } from "react-chessboard/dist/chessboard/types"
+import type { Square } from "react-chessboard/dist/chessboard/types"
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { usePlayerContext } from "../hooks/usePlayerContext";
 import { gigachad } from '../assets';
 import { socket } from "../socket"
-import { Chat, ClientUser } from "../server/src/lobby";
-import { MoveType } from "../server/src/socket";
+import type { ClientUser } from "../server/src/lobby";
+import type { MoveType } from "../server/src/socket";
 import Timer from "./Timer";
 import { OutcomeType } from "./Online";
 import { useNavigate } from "react-router-dom";
