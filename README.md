@@ -7,7 +7,7 @@ npm install
 npm run dev
 ```
 
-# Run Server
+## Run Server
 
 ```
 cd src/server
