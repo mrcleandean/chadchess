@@ -5,7 +5,7 @@ import { socket } from '../socket';
 import type { Chat } from "../server/src/lobby";
 
 
-const GameChat = ({ chatOpen, setChatOpen }: { chatOpen: boolean, setChatOpen: Dispatch<SetStateAction<boolean>> }) => {
+const GameChat = ({ chatOpen, setChatOpen, setNumOfChats }: { chatOpen: boolean, setChatOpen: Dispatch<SetStateAction<boolean>>, setNumOfChats: Dispatch<SetStateAction<number>> }) => {
     const { user } = usePlayerContext();
     const wordLimit = 75;
     const [chats, setChats] = useState<Chat[]>([]);
@@ -13,6 +13,7 @@ const GameChat = ({ chatOpen, setChatOpen }: { chatOpen: boolean, setChatOpen: D
     const chatArrayAreaRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         socket.on('opponent-sent-chat', (chat: Chat) => {
+            setNumOfChats(prev => prev + 1);
             setChats(prev => [...prev, chat]);
         })
         return () => {
@@ -25,15 +26,16 @@ const GameChat = ({ chatOpen, setChatOpen }: { chatOpen: boolean, setChatOpen: D
     const sendGameChat = () => {
         if (!message.length || message.length > wordLimit) return;
         if (socket.id) {
-            socket.emit('game-chat', ({ message, user, time: new Date() }), socket.id);
+            socket.emit('game-chat', ({ message, user, time: new Date() }));
         }
+        setChats(prev => [...prev, { message, user, time: new Date() }]);
         setMessage('');
     }
     return (
-        <div className={`${chatOpen ? 'flex' : 'hidden'} bg-primary absolute bottom-0 z-50 md:relative w-full h-[calc(100vh-2.5rem)] flex-col justify-end`}>
+        <div className={`${chatOpen ? 'flex' : 'hidden'} bg-primary absolute h-full bottom-0 z-40 md:relative w-full flex-col justify-end box-border pb-10`}>
             <button
                 onClick={() => setChatOpen(prev => !prev)}
-                className="md:hidden bg-secondary text-white p-1.5 text-xs absolute z-[60] top-3 left-3 rounded-xl flex gap-1 items-center justify-between border-2 border-primary"
+                className="md:hidden bg-secondary text-white p-1.5 text-xs absolute z-50 top-3 left-3 rounded-xl flex gap-1 items-center justify-between border-2 border-primary"
             >
                 {chatOpen ? 'Close' : 'Open'} {<BsFillChatDotsFill color="white" size={16} />}
             </button>
@@ -65,7 +67,7 @@ const GameChat = ({ chatOpen, setChatOpen }: { chatOpen: boolean, setChatOpen: D
                 />
                 <button
                     className='bg-secondary text-white w-20 transition-all duration-75 rounded-r-lg flex flex-col items-center justify-center gap-0.5'
-                // onClick={sendGameChat}
+                    onClick={sendGameChat}
                 >
                     <p>Send</p>
                     <p className={`${message.length <= wordLimit ? 'text-white' : 'text-red-500 font-semibold'} text-[0.68rem]`}>{message.length}/{wordLimit}</p>

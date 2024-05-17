@@ -30,6 +30,7 @@ const HomeChat = ({ chatOpen, setChatOpen }: { chatOpen: boolean, setChatOpen: D
     const sendChat = () => {
         if (!message || message.length > wordLimit) return;
         socket.emit('global-chat', { message, user, time: new Date() })
+        setChats(prev => [...prev, { message, user, time: new Date() }]);
         setMessage('');
     }
 

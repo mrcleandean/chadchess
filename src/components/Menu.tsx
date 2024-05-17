@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { AiOutlineArrowRight, AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { chest, gigachad, liam, mega, rambo, squidward, stewie, tate } from "../assets";
 import { ChangeEvent, Dispatch, KeyboardEvent, SetStateAction, useEffect, useState } from "react";
@@ -11,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 export type LobbyState = {
     pictureDisplay: boolean;
     nameText: string;
-    strength: number;
     finding: boolean;
 }
 
@@ -23,7 +22,6 @@ const Menu = ({ chatOpen, setChatOpen }: { chatOpen: boolean; setChatOpen: Dispa
     const [menuDisplay, setMenuDisplay] = useState<LobbyState>({
         pictureDisplay: false,
         nameText: '',
-        strength: 4,
         finding: false
     })
     const changeName = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -56,15 +54,9 @@ const Menu = ({ chatOpen, setChatOpen }: { chatOpen: boolean; setChatOpen: Dispa
             nameText: e.target.value
         }))
     }
-    const changeStrength = (e: ChangeEvent<HTMLInputElement>) => {
-        setMenuDisplay(prev => ({
-            ...prev,
-            strength: Number(e.target.value)
-        }))
-    }
     const findGame = () => {
         if (user.id && socket.id) {
-            socket.emit('find-game', user as User, socket.id);
+            socket.emit('find-game', user as User);
         }
     }
     useEffect(() => {
@@ -95,7 +87,7 @@ const Menu = ({ chatOpen, setChatOpen }: { chatOpen: boolean; setChatOpen: Dispa
                 <div className="w-full h-fit flex flex-wrap gap-2 justify-evenly">
                     <div className="relative">
                         <img
-                            className="w-28 h-28 object-contain rounded-lg cursor-pointer hover:scale-105 transition-all z-10 relative"
+                            className="w-28 h-28 object-contain rounded-lg cursor-pointer hover:scale-105 transition-all z-20 relative"
                             src={user.pic ? user.pic : gigachad}
                             onClick={togglePictureDisplay}
                         />
@@ -108,7 +100,7 @@ const Menu = ({ chatOpen, setChatOpen }: { chatOpen: boolean; setChatOpen: Dispa
                             }}
                             className="absolute text-secondary font-semibold text-[10px]">Click to change</motion.p>
                         <motion.div
-                            className={'absolute overflow-x-auto mt-2 h-18 w-32 z-10'}
+                            className={'absolute z-10 overflow-x-auto mt-2 h-18 w-32'}
                             initial="hidden"
                             animate={menuDisplay.pictureDisplay ? 'show' : 'hidden'}
                             variants={{
@@ -134,7 +126,7 @@ const Menu = ({ chatOpen, setChatOpen }: { chatOpen: boolean; setChatOpen: Dispa
                                 }
                             }}
                         >
-                            <div className={`flex gap-1 z-0 ${menuDisplay.pictureDisplay ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+                            <div className={`flex gap-1 ${menuDisplay.pictureDisplay ? 'pointer-events-auto' : 'pointer-events-none'}`}>
                                 {characters.map((character, i) => {
                                     return (
                                         <img
@@ -181,41 +173,27 @@ const Menu = ({ chatOpen, setChatOpen }: { chatOpen: boolean; setChatOpen: Dispa
                 </div>
 
                 <div className="w-full flex flex-col gap-3 justify-evenly items-center mt-7 relative z-0">
-                    <div
+                    <button
                         className={`${socket ? 'bg-secondary' : 'bg-[rgb(129,158,238)] pointer-events-none'} w-44 h-14 cursor-pointer rounded-2xl flex justify-center items-center drop-shadow-[0px_2.2px_2.2px_black] hover:scale-105 transition-all`}
                         onClick={findGame}
                     >
                         <p className="text-white tracking-wide font-semibold text-lg">Find Game</p>
-                    </div>
-                    <div className="w-44 h-14 bg-secondary cursor-pointer rounded-2xl flex justify-center items-center drop-shadow-[0px_2.2px_2.2px_black] hover:scale-105 transition-all">
-                        <p className="text-white tracking-wide font-semibold text-lg">Coming Soon</p>
-                    </div>
-                    <div className="flex flex-col items-center justify-center relative">
-                        <input
-                            name="computerStrength"
-                            id="computerstrength"
-                            type='range'
-                            min="1"
-                            max="8"
-                            step="1"
-                            onChange={changeStrength}
-                            className="accent-secondary"
-                            value={menuDisplay.strength}
-                        />
-                        <label htmlFor="computerstrength" className="text-secondary font-medium text-sm mt-1">Computer Strength:
-                            <span className="text-white bg-secondary rounded-full px-1 ml-1">{menuDisplay.strength}</span>
-                        </label>
-                        <div className={`${menuDisplay.finding ? '' : 'hidden'} w-12 absolute top-9 pointer-events-none flex justify-center items-center flex-col`}>
-                            <motion.div
-                                animate={{ rotate: 360 }}
-                                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                                className="w-12 h-12 flex justify-center items-center"
-                            >
-                                <AiOutlineLoading3Quarters size={30} className="text-secondary" />
-                            </motion.div>
-                            <p className="text-[11px] text-secondary font-extrabold">Finding...</p>
-                        </div>
-
+                    </button>
+                    <div className={`w-12 h-16 pointer-events-none flex justify-center items-center`}>
+                        <AnimatePresence>
+                            {menuDisplay.finding && (
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    exit={{ scale: 0 }}
+                                >
+                                    <div className=" animate-spin w-12 h-12 flex justify-center items-center">
+                                        <AiOutlineLoading3Quarters size={30} className="text-secondary" />
+                                    </div>
+                                    <p className="text-[11px] text-secondary font-extrabold">Finding...</p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </div>

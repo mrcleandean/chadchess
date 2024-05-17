@@ -9,12 +9,16 @@ export type User = {
 class Game {
     white: User;
     black: User;
+    whiteTimeRemaining: number;
+    blackTimeRemaining: number;
     turn: 'white' | 'black';
     chess: Chess;
 
     constructor(player1: User, player2: User) {
         this.white = player1
         this.black = player2
+        this.whiteTimeRemaining = 5 * 60 * 1000;
+        this.blackTimeRemaining = 5 * 60 * 1000;
         this.turn = 'white';
         this.chess = new Chess();
     }

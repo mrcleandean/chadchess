@@ -22,7 +22,7 @@ const Pieces3D = () => {
         <div className="w-full h-64 mt-6 flex relative z-50 max-w-3xl">
             <Suspense fallback={
                 <div className="w-full flex justify-center">
-                    <ImSpinner className="bg-secondary animate-spin" size={30} />
+                    <ImSpinner className="text-secondary animate-spin" size={30} />
                 </div>
             }>
                 <Canvas

@@ -10,7 +10,7 @@ export type Chat = {
 }
 
 class Lobby {
-    games: { [playerId: string]: Game };
+    games: { [playerId: string]: Game | undefined };
     queue: (User & { id: string })[];
     chats: Chat[];
 

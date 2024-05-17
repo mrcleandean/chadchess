@@ -1,5 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
+import { OutcomeType } from "./Online";
 
 function formatTime(ms: number) {
     let seconds = Math.floor(ms / 1000); // Convert milliseconds to seconds
@@ -10,19 +11,30 @@ function formatTime(ms: number) {
     return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }
 
-const Timer = ({ active }: { active: boolean }) => {
+const Timer = ({ active, me, setOutcome }: { active: boolean, me: boolean, setOutcome: Dispatch<SetStateAction<OutcomeType>> }) => {
     const [time, setTime] = useState<string>('5:00');
-    const flagged = useRef(new Date().getTime() + 5 * 60 * 1000);
+    const timeLeft = useRef(5 * 60 * 1000);
     useEffect(() => {
         if (!active) return;
+        let timeStarted = new Date().getTime();
+        let newTime = timeLeft.current;
         const intervalId = setInterval(() => {
-            const newTime = flagged.current - new Date().getTime();
-            if (newTime <= 0) socket.emit('flagged');
+            const elapsed = new Date().getTime() - timeStarted;
+            newTime = timeLeft.current - elapsed;
             setTime(formatTime(newTime));
-        }, 500);
+            if (newTime <= 0) {
+                socket.emit('flagged');
+                setTime('0:00');
+                setOutcome({
+                    by: 'flag',
+                    winner: me ? 'opponent' : 'user'
+                });
+                clearInterval(intervalId);
+            };
+        }, 900);
         return () => {
+            timeLeft.current = newTime;
             clearInterval(intervalId);
-            // flagged.current = flagged.current - 
         }
     }, [active]);
     return (

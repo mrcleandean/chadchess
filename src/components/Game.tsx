@@ -6,9 +6,11 @@ import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { usePlayerContext } from "../hooks/usePlayerContext";
 import { gigachad } from '../assets';
 import { socket } from "../socket"
-import { ClientUser } from "../server/src/lobby";
+import { Chat, ClientUser } from "../server/src/lobby";
 import { MoveType } from "../server/src/socket";
 import Timer from "./Timer";
+import { OutcomeType } from "./Online";
+import { useNavigate } from "react-router-dom";
 
 export type GameType = {
     fen: 'start' | string;
@@ -16,34 +18,33 @@ export type GameType = {
     turn: 'white' | 'black';
 }
 
-function Game({ setChatOpen }: { setChatOpen: Dispatch<SetStateAction<boolean>> }) {
+function Game({ setChatOpen, outcome, numOfChats, setOutcome }: { setChatOpen: Dispatch<SetStateAction<boolean>>, outcome: OutcomeType, numOfChats: number, setOutcome: Dispatch<SetStateAction<OutcomeType>> }) {
     const { user } = usePlayerContext();
+    const navigator = useNavigate();
     const [opponent, setOpponent] = useState<ClientUser>({ pic: '', username: '', id: undefined })
-    const [game, setGame] = useState<GameType>({ fen: 'start', side: 'white', turn: 'white' })
+    const [game, setGame] = useState<GameType>({
+        fen: 'start',
+        side: 'white',
+        turn: 'white'
+    })
     const onDrop = (sourceSquare: Square, targetSquare: Square) => {
         const move = { from: sourceSquare, to: targetSquare, promotion: 'q' } as MoveType;
         if (socket.id) {
-            socket.emit('move', move, socket.id);
+            socket.emit('move', move);
         }
         return true;
     }
 
-    const rematch = () => {
-        if (socket.id) {
-            socket.emit('request-rematch', socket.id);
-        }
-
-    }
-
     const resign = () => {
         if (socket.id) {
-            socket.emit('resign', socket.id);
+            socket.emit('resign');
+            navigator('/');
         }
     }
 
     useEffect(() => {
         if (socket.id) {
-            socket.emit('game-requested', socket.id);
+            socket.emit('game-requested');
         }
         socket.on('game-recieved', (opponent: ClientUser, side) => {
             setGame(prev => ({
@@ -59,7 +60,6 @@ function Game({ setChatOpen }: { setChatOpen: Dispatch<SetStateAction<boolean>> 
                 turn
             }))
         });
-
         return () => {
             socket.off('game-recieved');
             socket.off('update-board');
@@ -67,7 +67,7 @@ function Game({ setChatOpen }: { setChatOpen: Dispatch<SetStateAction<boolean>> 
     }, []);
 
     return (
-        <div className="w-full mt-6 flex flex-col items-center max-w-md">
+        <div className="w-full flex flex-col items-center justify-center max-w-md">
             <div className="w-[90%] flex justify-center flex-col relative">
                 <div className="flex justify-between h-18 w-full mb-2 p-2 rounded-lg">
                     <div className="flex gap-3">
@@ -82,7 +82,11 @@ function Game({ setChatOpen }: { setChatOpen: Dispatch<SetStateAction<boolean>> 
                     </div>
 
                     <div className="bg-secondary p-4 rounded-lg flex justify-center itemes-center">
-                        <Timer active={game.turn !== game.side} />
+                        <Timer
+                            me={false}
+                            active={game.turn !== game.side && outcome.winner === 'pending'}
+                            setOutcome={setOutcome}
+                        />
                     </div>
                 </div>
                 <div className='w-full'>
@@ -111,22 +115,27 @@ function Game({ setChatOpen }: { setChatOpen: Dispatch<SetStateAction<boolean>> 
                             </div>
                         </div>
                         <div className="bg-secondary p-4 rounded-lg flex justify-center itemes-center">
-                            <Timer active={game.turn === game.side} />
+                            <Timer
+                                me={true}
+                                active={game.turn === game.side && outcome.winner === 'pending'}
+                                setOutcome={setOutcome}
+                            />
                         </div>
                     </div>
                     <div className="w-full h-12 flex justify-around items-center mt-2">
-                        <div className="flex flex-col items-center justify-center cursor-pointer" onClick={() => setChatOpen(prev => !prev)}>
+                        <button className="relative flex flex-col items-center justify-center cursor-pointer" onClick={() => setChatOpen(prev => !prev)}>
                             <BsFillChatDotsFill color="#6380e4" size={24} />
                             <p className="text-xs text-secondary">Chat</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-center cursor-pointer" onClick={rematch}>
-                            <FaHandshake color="#6380e4" size={24} />
-                            <p className="text-xs text-secondary">Request Draw</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-center cursor-pointer" onClick={resign}>
+                            {numOfChats > 0 && (
+                                <div className="absolute -top-2 -right-2 bg-secondary w-4 h-4 rounded-full flex items-center justify-center">
+                                    <p className="text-primary text-xs">{numOfChats}</p>
+                                </div>
+                            )}
+                        </button>
+                        <button className="flex flex-col items-center justify-center cursor-pointer" onClick={resign}>
                             <BsFlagFill color="#6380e4" size={24} />
                             <p className="text-xs text-secondary">Resign</p>
-                        </div>
+                        </button>
                     </div>
                 </div>
             </div>
