@@ -20,7 +20,13 @@
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.23.1",
     "socket.io-client": "^4.7.5",
-    "three": "^0.164.1"
+    "three": "^0.164.1",
+    "chess.js": "^1.0.0-beta.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "node-schedule": "^2.1.1",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
