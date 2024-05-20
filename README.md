@@ -3,6 +3,7 @@
 ## Run Client
 
 ```
+cd client
 npm install
 npm run dev
 ```
@@ -10,7 +11,7 @@ npm run dev
 ## Run Server
 
 ```
-cd src/server
+cd server
 npm install
 npm run dev
 ```
