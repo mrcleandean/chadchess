@@ -6,7 +6,6 @@ import rambo from './characters/rambo.png';
 import squidward from './characters/squidward.png';
 import stewie from './characters/stewie.png';
 import tate from './characters/tate.png';
-import chadchessbg from './chadchessbg.jpg';
 import logo from './logo.png';
 
-export { chest, gigachad, liam, mega, rambo, squidward, stewie, tate, chadchessbg, logo };
+export { chest, gigachad, liam, mega, rambo, squidward, stewie, tate, logo };
