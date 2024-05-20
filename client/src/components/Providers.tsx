@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { gigachad } from "../assets";
 import { PlayerContext } from "../hooks/usePlayerContext";
-import { socket } from "../socket";
+import { useEffect, useState } from "react";
 import RouterProvider from "./Router";
+import { gigachad } from "../assets";
+import { socket } from "../socket";
+
 import type { ClientUser } from "../../../server/src/lobby";
 
 const Providers = () => {

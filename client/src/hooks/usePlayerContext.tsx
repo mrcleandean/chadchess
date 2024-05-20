@@ -1,7 +1,6 @@
 import { type Dispatch, type SetStateAction, createContext, useContext } from "react";
+
 import type { ClientUser } from "../../../server/src/lobby";
-
-
 
 export type ContextType = {
     user: ClientUser,

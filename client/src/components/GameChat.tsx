@@ -2,8 +2,8 @@ import { useRef, useState, type Dispatch, type SetStateAction, useEffect } from 
 import { usePlayerContext } from "../hooks/usePlayerContext";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import { socket } from '../socket';
-import type { Chat } from "../../../server/src/lobby";
 
+import type { Chat } from "../../../server/src/lobby";
 
 const GameChat = ({ chatOpen, setChatOpen, setNumOfChats }: { chatOpen: boolean, setChatOpen: Dispatch<SetStateAction<boolean>>, setNumOfChats: Dispatch<SetStateAction<number>> }) => {
     const { user } = usePlayerContext();

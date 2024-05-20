@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { socket } from "../socket";
-import Game from "./Game";
-import GameChat from "./GameChat";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { socket } from "../socket";
+import GameChat from "./GameChat";
+import Game from "./Game";
 
 export type OutcomeType = {
     by: 'pending' | 'checkmate' | 'stalemate' | 'resign' | 'flag';

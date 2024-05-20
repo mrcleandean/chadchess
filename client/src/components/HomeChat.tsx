@@ -1,10 +1,10 @@
 import { usePlayerContext } from "../hooks/usePlayerContext";
-
-import type { Chat } from "../../../server/src/lobby";
 import { type Dispatch, type SetStateAction, useEffect, useRef, useState } from "react";
 import { BsFillChatDotsFill } from "react-icons/bs";
 import formatDate from "../util/formatDate";
 import { socket } from "../socket";
+
+import type { Chat } from "../../../server/src/lobby";
 
 const HomeChat = ({ chatOpen, setChatOpen }: { chatOpen: boolean, setChatOpen: Dispatch<SetStateAction<boolean>> }) => {
     const { user } = usePlayerContext();

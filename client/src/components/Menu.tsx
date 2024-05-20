@@ -1,12 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion"
-import { AiOutlineArrowRight, AiOutlineLoading3Quarters } from 'react-icons/ai'
-import { chest, gigachad, liam, mega, rambo, squidward, stewie, tate } from "../assets";
 import { type ChangeEvent, type Dispatch, type KeyboardEvent, type SetStateAction, useEffect, useState } from "react";
+import { chest, gigachad, liam, mega, rambo, squidward, stewie, tate } from "../assets";
+import { AiOutlineArrowRight, AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { usePlayerContext } from "../hooks/usePlayerContext";
+import { AnimatePresence, motion } from "framer-motion"
 import { BsFillChatDotsFill } from 'react-icons/bs'
-import { socket } from "../socket";
 import { User } from "../../../server/src/game";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../socket";
 
 export type LobbyState = {
     pictureDisplay: boolean;

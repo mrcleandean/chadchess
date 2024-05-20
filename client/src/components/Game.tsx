@@ -1,15 +1,16 @@
-import { Chessboard } from "react-chessboard"
-import { BsFillChatDotsFill, BsFlagFill } from 'react-icons/bs'
-import type { Square } from "react-chessboard/dist/chessboard/types"
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
+import { BsFillChatDotsFill, BsFlagFill } from 'react-icons/bs'
 import { usePlayerContext } from "../hooks/usePlayerContext";
+import { useNavigate } from "react-router-dom";
+import { Chessboard } from "react-chessboard"
+import { OutcomeType } from "./Online";
 import { gigachad } from '../assets';
 import { socket } from "../socket"
+import Timer from "./Timer";
+
+import type { Square } from "react-chessboard/dist/chessboard/types"
 import type { ClientUser } from "../../../server/src/lobby";
 import type { MoveType } from "../../../server/src/socket";
-import Timer from "./Timer";
-import { OutcomeType } from "./Online";
-import { useNavigate } from "react-router-dom";
 
 export type GameType = {
     fen: 'start' | string;

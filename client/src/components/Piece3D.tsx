@@ -1,8 +1,8 @@
+import { Environment, Float, useGLTF } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { Suspense, useEffect } from "react"
-import { Environment, Float, useGLTF } from "@react-three/drei"
-import * as THREE from 'three'
 import { ImSpinner } from "react-icons/im";
+import * as THREE from 'three'
 
 const Pieces3D = () => {
     const rook = useGLTF('/rook/scene.gltf');
